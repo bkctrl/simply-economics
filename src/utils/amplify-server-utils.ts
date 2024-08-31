@@ -12,7 +12,7 @@ export const { runWithAmplifyServerContext } = createServerRunner({
             redirectSignOut: [
               "http://localhost:3030/",
             ],
-            domain: 'simplyeconomics.auth.ca-central-1.amazoncognito.com',
+            domain: `${process.env.NEXT_PUBLIC_COGNITO_DOMAIN}`,
             scopes: ['email', 'openid', 'profile'],
             responseType: 'code'
           },
