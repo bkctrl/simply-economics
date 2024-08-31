@@ -7,10 +7,10 @@ export const { runWithAmplifyServerContext } = createServerRunner({
         loginWith: {
           oauth: {
             redirectSignIn: [
-              "http://localhost:3030/",
+              "https://simplyeconomics.ca/",
             ],
             redirectSignOut: [
-              "http://localhost:3030/",
+              "https://simplyeconomics.ca/",
             ],
             domain: `${import.meta.env.VITE_COGNITO_DOMAIN}`,
             scopes: ['email', 'openid', 'profile'],
