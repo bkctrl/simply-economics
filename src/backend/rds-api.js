@@ -38,7 +38,7 @@ await client.connect();
 app.get('/posts', async (req, res) => {
   try {
     console.log("fetching posts");
-    const result = await client.query('SELECT * FROM posts');
+    const result = await client.query('SELECT * FROM posts ORDER BY id ASC');
     res.json(result.rows);
   } catch (error) {
     console.error('Error fetching posts:', error);

@@ -10,6 +10,19 @@ export const UserProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+  function correctPicURL(url) {
+    const s3UrlRegex = /^https:\/\/([^\.]+)\.s3\.[^\/]+\/(.+)$/;
+    const match = url.match(s3UrlRegex);
+
+    if (match) {
+      const bucketName = match[1];
+      const key = match[2];
+      return `https://${bucketName}.s3.ca-central-1.amazonaws.com/${key}`;
+    }
+
+    return url;
+  }
+
   useEffect(() => {
     const loadUserData = async () => {
       try {
@@ -38,6 +51,8 @@ export const UserProvider = ({ children }) => {
           } else {
             console.log("Start fetching user attributes")
             const userAttributes = await fetchUserAttributes();
+              const correctPictureUrl = correctPicURL(userAttributes.picture);
+              userAttributes.picture = correctPictureUrl;
             console.log("Attributes:", userAttributes); // Debugging user data
             setAttributes(userAttributes);
           }
