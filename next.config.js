@@ -1,6 +1,6 @@
-const withImages = require('next-images');
+import withImages from 'next-images';
 
-module.exports = withImages({
+const nextConfig = withImages({
   distDir: "build",
   productionBrowserSourceMaps: false,
   env: {
@@ -15,3 +15,5 @@ module.exports = withImages({
     NEXT_PUBLIC_RDS_APIURL: process.env.NEXT_PUBLIC_RDS_APIURL,
   },
 });
+
+export default nextConfig;

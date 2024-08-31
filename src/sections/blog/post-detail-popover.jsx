@@ -18,7 +18,7 @@ export default function PostDetailPopover({ anchorEl, handleClose, post, randIma
   useEffect(() => {
     const fetchComments = async () => {
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_RDS_APIURL}/comments?postId=${post.id}`, {
+        const response = await fetch(`${import.meta.env.VITE_RDS_APIURL}/comments?postId=${post.id}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -43,7 +43,7 @@ export default function PostDetailPopover({ anchorEl, handleClose, post, randIma
     console.log(post.id)
     if (newComment.trim() !== '') {
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_RDS_APIURL}/add-comment`, {
+        const response = await fetch(`${import.meta.env.VITE_RDS_APIURL}/add-comment`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

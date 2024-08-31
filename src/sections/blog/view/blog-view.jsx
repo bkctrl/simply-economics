@@ -23,7 +23,7 @@ export default function BlogView() {
     AOS.init();
     const loadPosts = async () => {
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_RDS_APIURL}/posts`);
+        const response = await fetch(`${import.meta.env.VITE_RDS_APIURL}/posts`);
         if (!response.ok) {
           throw new Error(`Failed to fetch posts: ${response.statusText}`);
         }
@@ -65,7 +65,7 @@ export default function BlogView() {
 
   const handleEditPost = async (postId, newTitle, newContent) => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_RDS_APIURL}/posts/${postId}`, {
+      const response = await fetch(`${import.meta.env.VITE_RDS_APIURL}/posts/${postId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ title: newTitle, content: newContent }),
@@ -85,7 +85,7 @@ export default function BlogView() {
 
   const handleDeletePost = async (postId) => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_RDS_APIURL}/posts/${postId}`, {
+      const response = await fetch(`${import.meta.env.VITE_RDS_APIURL}/posts/${postId}`, {
         method: 'DELETE',
       });
       if (response.ok) {

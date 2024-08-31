@@ -1,5 +1,3 @@
-// "use client"
-
 import { Amplify } from 'aws-amplify';
 
 Amplify.configure({
@@ -13,13 +11,13 @@ Amplify.configure({
           redirectSignOut: [
             "http://localhost:3030/",
           ],
-          domain: `${process.env.NEXT_PUBLIC_COGNITO_DOMAIN}`,
+          domain: `${import.meta.env.VITE_COGNITO_DOMAIN}`,
           scopes: ['email', 'openid', 'profile'],
           responseType: 'code'
         },
       },
-      userPoolId: `${process.env.NEXT_PUBLIC_USER_POOL_ID}`,
-      userPoolClientId: `${process.env.NEXT_PUBLIC_USER_POOL_CLIENT_ID}`
+      userPoolId: `${import.meta.env.VITE_USER_POOL_ID}`,
+      userPoolClientId: `${import.meta.env.VITE_USER_POOL_CLIENT_ID}`
     },
   },
 });

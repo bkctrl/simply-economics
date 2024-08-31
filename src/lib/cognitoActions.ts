@@ -161,8 +161,8 @@ export async function handleConfirmUserAttribute(formData: any) {
 const s3Client = new S3Client({
   region: "ca-central-1",
   credentials: {
-    accessKeyId: `${process.env.NEXT_PUBLIC_IAM_USER_KEY}`,
-    secretAccessKey: `${process.env.NEXT_PUBLIC_IAM_USER_SECRET}`,
+    accessKeyId: `${import.meta.env.VITE_IAM_USER_KEY}`,
+    secretAccessKey: `${import.meta.env.VITE_IAM_USER_SECRET}`,
   },
 });
 
@@ -172,7 +172,7 @@ export async function uploadToS3(file) {
     Key: `${file.name}`, 
     Body: file, 
     ContentType: file.type, 
-    ACL: "public-read",
+    ACL: "public-read" as const,
   };
 
   try {

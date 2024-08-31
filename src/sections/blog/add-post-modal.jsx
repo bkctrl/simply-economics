@@ -29,7 +29,7 @@ export default function AddPostModal({ open, handleClose, handleAddPost }) {
 
     try {
       // Make an API call to add the post to the backend
-      const response = await fetch(`${process.env.NEXT_PUBLIC_RDS_APIURL}/add-post`, {
+      const response = await fetch(`${import.meta.env.VITE_RDS_APIURL}/add-post`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -12,13 +12,13 @@ export const { runWithAmplifyServerContext } = createServerRunner({
             redirectSignOut: [
               "http://localhost:3030/",
             ],
-            domain: `${process.env.NEXT_PUBLIC_COGNITO_DOMAIN}`,
+            domain: `${import.meta.env.VITE_COGNITO_DOMAIN}`,
             scopes: ['email', 'openid', 'profile'],
             responseType: 'code'
           },
         },
-        userPoolId: String(process.env.NEXT_PUBLIC_USER_POOL_ID),
-        userPoolClientId: String(process.env.NEXT_PUBLIC_USER_POOL_CLIENT_ID),
+        userPoolId: String(import.meta.env.VITE_USER_POOL_ID),
+        userPoolClientId: String(import.meta.env.VITE_USER_POOL_CLIENT_ID),
       },
     },
   },

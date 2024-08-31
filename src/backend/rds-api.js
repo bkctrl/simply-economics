@@ -22,11 +22,11 @@ app.use(
 );
 
 const client = new pg.Client({
-  user: process.env.NEXT_PUBLIC_RDS_USER,
-  host: process.env.NEXT_PUBLIC_RDS_HOST,
-  database: process.env.NEXT_PUBLIC_RDS_DATABASE,
-  password: process.env.NEXT_PUBLIC_RDS_PASSWORD,
-  port: process.env.NEXT_PUBLIC_RDS_PORT,
+  user: import.meta.env.VITE_RDS_USER,
+  host: import.meta.env.VITE_RDS_HOST,
+  database: import.meta.env.VITE_RDS_DATABASE,
+  password: import.meta.env.VITE_RDS_PASSWORD,
+  port: import.meta.env.VITE_RDS_PORT,
   ssl: {
     rejectUnauthorized: false, 
   },
