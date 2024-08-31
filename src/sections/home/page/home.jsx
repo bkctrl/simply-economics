@@ -87,6 +87,8 @@ export default function HomeView() {
 
     const fetchPosts = async () => {
       try {
+        console.log("Home page launched");
+        console.log("RDS API URL: ", process.env.NEXT_PUBLIC_RDS_APIURL);
         const response = await fetch(`${process.env.NEXT_PUBLIC_RDS_APIURL}/posts`, { method: 'GET' });
         if (response.ok) {
           const allPosts = await response.json();
