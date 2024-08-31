@@ -101,7 +101,6 @@ export default function PostDetailPopover({ anchorEl, handleClose, post, randIma
             position: 'relative',
             width: 'calc(100% - 300px)',
             height: '100%',
-            bgcolor: 'background.paper',
             boxShadow: 'none',
             overflowY: 'auto',  
             bgcolor: '#F9FAFB',

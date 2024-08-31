@@ -1,5 +1,6 @@
 import * as fs from "fs";
 import * as AWS from "aws-sdk";
+import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 
 import {
   signUp,
@@ -157,30 +158,30 @@ export async function handleConfirmUserAttribute(formData: any) {
   return "success";
 }
 
-const s3bucket = new AWS.S3({
-  accessKeyId: process.env.NEXT_PUBLIC_IAM_USER_KEY,
-  secretAccessKey: process.env.NEXT_PUBLIC_IAM_USER_SECRET,
-  region: 'ca-central-1',
+const s3Client = new S3Client({
+  region: "ca-central-1",
+  credentials: {
+    accessKeyId: `${process.env.NEXT_PUBLIC_IAM_USER_KEY}`,
+    secretAccessKey: `${process.env.NEXT_PUBLIC_IAM_USER_SECRET}`,
+  },
 });
 
 export async function uploadToS3(file) {
-  console.log("uploadToS3 Triggered");
   const params = {
-    Bucket: process.env.NEXT_PUBLIC_BUCKET_NAME,
-    Key: `${file.name}`, // The key is the path and name of the file in the bucket
-    Body: file, // File object from the input
-    ContentType: file.type, // Set the content type for the file
-    ACL: 'public-read',
+    Bucket: "simplyeconomics",
+    Key: `${file.name}`, 
+    Body: file, 
+    ContentType: file.type, 
+    ACL: "public-read",
   };
 
-  return new Promise((resolve, reject) => {
-    s3bucket.upload(params, (err, data) => {
-      if (err) {
-        console.error("Error uploading to S3:", err);
-        return reject(err);
-      }
-      console.log("Successfully uploaded to S3:", data.Location);
-      return resolve(data.Location); // Return the URL of the uploaded file
-    });
-  });
+  try {
+    const command = new PutObjectCommand(params);
+    const data = await s3Client.send(command);
+    console.log("Successfully uploaded to S3:", data);
+    return `https://${params.Bucket}.s3.${s3Client.config.region}.amazonaws.com/${params.Key}`;
+  } catch (err) {
+    console.error("Error uploading to S3:", err);
+    throw err;
+  }
 }

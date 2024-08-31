@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     // ... other options
+    "sourceMap": false,
     "baseUrl": ".",
     "paths": {
       "src/*": ["src/*"]

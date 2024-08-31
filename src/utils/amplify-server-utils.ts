@@ -1,4 +1,3 @@
-import { authConfig } from 'src/amplify-cognito-config';
 import { createServerRunner } from "@aws-amplify/adapter-nextjs";
 
 export const { runWithAmplifyServerContext } = createServerRunner({

@@ -1,31 +1,6 @@
-"use client"
+// "use client"
 
 import { Amplify } from 'aws-amplify';
-
-console.log(process.env.NEXT_PUBLIC_USER_POOL_ID)
-
-export const authConfig = {
-  Auth: {
-    Cognito: {
-      userPoolId: String(process.env.NEXT_PUBLIC_USER_POOL_ID),
-      userPoolClientId: String(process.env.NEXT_PUBLIC_USER_POOL_CLIENT_ID),
-      loginWith: {
-        oauth: {
-          redirectSignIn: [
-            "http://localhost:3030/",
-          ],
-          redirectSignOut: [
-            "http://localhost:3030/",
-          ],
-          domain: process.env.NEXT_PUBLIC_COGNITO_DOMAIN,
-          scopes: ['email', 'openid', 'profile'],
-          responseType: 'code'
-        },
-      },
-    },
-  },
-};
-
 
 Amplify.configure({
   Auth: {
@@ -38,13 +13,13 @@ Amplify.configure({
           redirectSignOut: [
             "http://localhost:3030/",
           ],
-          domain: process.env.NEXT_PUBLIC_COGNITO_DOMAIN,
+          domain: `${process.env.NEXT_PUBLIC_COGNITO_DOMAIN}`,
           scopes: ['email', 'openid', 'profile'],
           responseType: 'code'
         },
       },
-      userPoolId: String(process.env.NEXT_PUBLIC_USER_POOL_ID),
-      userPoolClientId: String(process.env.NEXT_PUBLIC_USER_POOL_CLIENT_ID),
+      userPoolId: `${process.env.NEXT_PUBLIC_USER_POOL_ID}`,
+      userPoolClientId: `${process.env.NEXT_PUBLIC_USER_POOL_CLIENT_ID}`
     },
   },
 });

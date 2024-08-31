@@ -196,6 +196,7 @@ export default function HomeView() {
                         cover: `/assets/images/covers/cover_${Math.floor(Math.random() * 24) + 1}.jpg`,
                         ...posts[0],
                       }}
+                      onTitleClick={() => handleTitleClick()}
                       index={4}
                     />
                   </div>
@@ -205,6 +206,7 @@ export default function HomeView() {
                         cover: `/assets/images/covers/cover_${Math.floor(Math.random() * 24) + 1}.jpg`,
                         ...posts[1],
                       }}
+                      onTitleClick={() => handleTitleClick()}
                       index={4}
                     />
                   </div>
@@ -217,41 +219,53 @@ export default function HomeView() {
               </Typography>
             </div>
 
-            {/* User's Posts Section */}
+            {/* User's Posts Section */}            
             <div style={{ flex: 1 }}>
               <Typography variant="h4" sx={{ mb: 3 }}>
                 <div style={{ display: 'flex', alignItems: 'center' }}>
                   Your Posts
                 </div>
-                {/* , flex: '0 0 45.9%'  */}
-                {isLoggedIn && (
-                  <div style={{ display: 'flex', alignItems: 'center', maxWidth: '100%',}}>
-                    {userPosts.length > 0 ? (
-                      userPosts.map((post, index) => (
-                        <div key={index} style={{
-                          paddingTop: "2rem",
-                          paddingRight: index === 0 ? "1rem" : "0",
-                          flex: index === 0 ? '0 0 51%' : '0 0 49%',
-                        }}data-aos="zoom-in" aos-duration="1500">
-                          <PostCard 
+                {isLoggedIn ? (
+                  userPosts.length > 0 ? (
+                    <div style={{ display: 'flex', alignItems: 'center', maxWidth: '100%' }}>
+                      {userPosts.map((post, index) => (
+                        <div
+                          key={index}
+                          style={{
+                            paddingTop: "2rem",
+                            paddingRight: index === 0 ? "1rem" : "0",
+                            flex: index === 0 ? '0 0 51%' : '0 0 49%',
+                          }}
+                          data-aos="zoom-in"
+                          aos-duration="1500"
+                        >
+                          <PostCard
                             post={{
                               ...post,
                               cover: `/assets/images/covers/cover_${Math.floor(Math.random() * 24) + 1}.jpg`,
                             }}
-                            onTitleClick={(event) => handleTitleClick(event, post)}
+                            onTitleClick={() => handleTitleClick()}
                             index={4}
                           />
                         </div>
-                      ))
-                    ) : (
-                      <div style={{ paddingTop: '10rem', textAlign: 'center', width: '100%' }}>
-                        <CircularProgress />
-                      </div>
-                    )}
-                  </div>
-                )}
-                {!isLoggedIn && (
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', width: '100%', paddingTop: '10rem'}}>
+                      ))}
+                    </div>
+                  ) : (
+                    <div style={{ paddingTop: '10rem', textAlign: 'center', width: '100%' }}>
+                      <h4>Add your first post!</h4>
+                    </div>
+                  )
+                ) : (
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      height: '100%',
+                      width: '100%',
+                      paddingTop: '10rem',
+                    }}
+                  >
                     <h4>Login to view your posts!</h4>
                   </div>
                 )}
