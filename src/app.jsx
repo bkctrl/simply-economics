@@ -6,7 +6,6 @@ import ConfigureAmplifyClientSide from 'src/amplify-cognito-config';
 import { UserProvider, useUser } from 'src/UserContext'; 
 import { CircularProgress } from '@mui/material';
 
-
 export default function App() {
   useScrollToTop();
 
@@ -19,7 +18,6 @@ export default function App() {
     </ThemeProvider>
   );
 }
-
 
 function MainContent() {
   const { loading } = useUser();

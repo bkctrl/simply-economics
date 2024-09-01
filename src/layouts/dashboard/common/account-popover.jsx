@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Box } from '@mui/material';
-
 import Avatar from '@mui/material/Avatar';
 import Divider from '@mui/material/Divider';
 import Popover from '@mui/material/Popover';
@@ -8,7 +7,6 @@ import { alpha } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import Button from '@mui/material/Button';
-import { account } from 'src/_mock/account';
 import { handleSignOut } from "src/lib/cognitoActions";
 import { useRouter } from 'src/routes/hooks';
 import { useUser } from 'src/UserContext';

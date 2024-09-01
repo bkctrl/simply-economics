@@ -2,15 +2,7 @@ import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
-import {
-  Box,
-  Modal, 
-  TextField,
-  Backdrop,
-  Fade,
-  IconButton,
-  CircularProgress,
-} from '@mui/material';
+import { Box, Modal, TextField, Backdrop, Fade, IconButton, CircularProgress } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { useUser } from 'src/UserContext';
 
@@ -28,7 +20,6 @@ export default function AddPostModal({ open, handleClose, handleAddPost }) {
     setLoading(true);
 
     try {
-      // Make an API call to add the post to the backend
       const response = await fetch(`${import.meta.env.VITE_RDS_APIURL}/add-post`, {
         method: 'POST',
         headers: {
@@ -46,7 +37,6 @@ export default function AddPostModal({ open, handleClose, handleAddPost }) {
       if (response.ok) {
         const newPost = await response.json();
         
-        // Call the handleAddPost to update the frontend
         handleAddPost({
           ...newPost,
           author: {

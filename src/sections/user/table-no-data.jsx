@@ -1,11 +1,8 @@
 import PropTypes from 'prop-types';
-
 import Paper from '@mui/material/Paper';
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import Typography from '@mui/material/Typography';
-
-// ----------------------------------------------------------------------
 
 export default function TableNoData({ query }) {
   return (

@@ -13,7 +13,6 @@ import { CircularProgress } from '@mui/material';
 import AOS from 'aos';
 
 export default function HomeView() {
-  
   const { user, attributes, isLoggedIn, loading } = useUser();
   const country = "CA";
   const year = 2023;

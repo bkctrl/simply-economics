@@ -1,3 +1,4 @@
+// Utilizing World Back REST API
 const APIURL = `https://api.worldbank.org/v2/country`;
 
 const indicators = {
@@ -78,6 +79,7 @@ export async function fetchSectors(countryCode) {
   }
 }
 
+// country name codes list 
 export const countries = [
   { value: 'CA', label: 'Canada' },
   { value: 'US', label: 'United States' },

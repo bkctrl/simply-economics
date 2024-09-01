@@ -1,15 +1,9 @@
 import PropTypes from 'prop-types';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import AnimatedNumbers from "react-animated-numbers";
-
 import { Box } from '@mui/material';
-
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
-
 import Chart, { useChart } from 'src/components/chart';
-
-// ----------------------------------------------------------------------
 
 export default function GDPPerCapita({ title, subheader, chart, ...other }) {
   const { labels, series, options } = chart;

@@ -4,8 +4,6 @@ import { checkboxClasses } from '@mui/material/Checkbox';
 import { menuItemClasses } from '@mui/material/MenuItem';
 import { autocompleteClasses } from '@mui/material/Autocomplete';
 
-// ----------------------------------------------------------------------
-
 export const paper = ({ theme, bgcolor, dropdown }) => ({
   ...bgBlur({
     blur: 20,
@@ -28,8 +26,6 @@ export const paper = ({ theme, bgcolor, dropdown }) => ({
     borderRadius: theme.shape.borderRadius * 1.25,
   }),
 });
-
-// ----------------------------------------------------------------------
 
 export const menuItem = (theme) => ({
   ...theme.typography.body2,
@@ -60,8 +56,6 @@ export const menuItem = (theme) => ({
     margin: theme.spacing(0.5, 0),
   },
 });
-
-// ----------------------------------------------------------------------
 
 export function bgBlur(props) {
   const color = props?.color || '#000000';
@@ -95,8 +89,6 @@ export function bgBlur(props) {
   };
 }
 
-// ----------------------------------------------------------------------
-
 export function bgGradient(props) {
   const direction = props?.direction || 'to bottom';
   const startColor = props?.startColor;
@@ -120,8 +112,6 @@ export function bgGradient(props) {
   };
 }
 
-// ----------------------------------------------------------------------
-
 export function textGradient(value) {
   return {
     background: `-webkit-linear-gradient(${value})`,
@@ -129,8 +119,6 @@ export function textGradient(value) {
     WebkitTextFillColor: 'transparent',
   };
 }
-
-// ----------------------------------------------------------------------
 
 export const hideScroll = {
   x: {

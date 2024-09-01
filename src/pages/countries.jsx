@@ -1,8 +1,5 @@
 import { Helmet } from 'react-helmet-async';
-
 import { CountriesView } from 'src/sections/countries/page';
-
-// ----------------------------------------------------------------------
 
 export default function CountriesPage() {
   return (

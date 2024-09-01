@@ -1,5 +1,3 @@
-import * as fs from "fs";
-import * as AWS from "aws-sdk";
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 
 import {

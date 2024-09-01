@@ -1,14 +1,9 @@
 import PropTypes from 'prop-types';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import AnimatedNumbers from "react-animated-numbers";
-
 import { Box } from '@mui/material';
-
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-
-// ----------------------------------------------------------------------
 
 export default function AppWidgetSummary({ isBIG, haveDollarSign, havePercentageSign, title, total, icon, color = 'primary', sx, ...other }) {
 

@@ -1,8 +1,5 @@
-// "use client";
-
 import { useState } from 'react';
 import { Box } from '@mui/material';
-
 import Link from '@mui/material/Link';
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
@@ -26,12 +23,10 @@ export default function SignupView() {
   });
   const [errorMessage, setErrorMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   
   const theme = useTheme();
-
   const router = useRouter();
-
-  const [showPassword, setShowPassword] = useState(false);
 
   const handleInputChange = (e) => {
     setFormData({

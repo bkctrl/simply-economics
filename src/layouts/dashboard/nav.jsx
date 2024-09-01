@@ -1,8 +1,6 @@
-/* eslint-disable perfectionist/sort-imports */
 import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Box } from '@mui/material';
-
 import Stack from '@mui/material/Stack';
 import Drawer from '@mui/material/Drawer';
 import Avatar from '@mui/material/Avatar';
