@@ -1,4 +1,3 @@
-<a href=""><img src="https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=for-the-badge"></a>
 <!-- PROJECT LOGO -->
 
 <div align="center">
