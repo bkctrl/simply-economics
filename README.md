@@ -129,24 +129,66 @@ export const countries = [
   ...
 ```
 
+2. Fetch key data using the API: 
 
-1. Navigate to [Notion](https://notion.so) and create a document.
-2. Create a new database by typing `/database`.
-3. Populate the database with appropriate data. The database(s) you create should be in these formats:
-   ![](https://uwmun.s3.ca-central-1.amazonaws.com/notion-demo-1.png?)
-4. Navigate to [Integrations](https://www.notion.so/profile/integrations) and create a Notion integration. Select the database you created. Select `Internal` or `Public` as appropriate and choose a logo. The UWMUN wesbite for instance uses an internal integration. 
-5. Select appropriate capabilities. Then show the Internal Integration Secret. This would be the `NEXT_PUBLIC_NOTION_API_KEY` in your `.env.local`. **Do not share this with anyone!**
-<br /><br />
-  ![](https://uwmun.s3.ca-central-1.amazonaws.com/notion-demo-2.png?)
-6. Find out your database ID. This is what precedes `?v=` of the link when you open the dabase in fulll screen:
-   ```sh
-   https://www.notion.so/<database_ID>?v=<view_ID>
-   ```
-This would be the `NEXT_PUBLIC_NOTION_EXECUTIVES_DATABASE_ID` or the ID of your specific database. The UWMUN website for instance has one for the executives database.
+```javascript
+// src/backend/country-data.js
+export async function fetchEconomicData(countryCode, year) {
+  try {
+    const fetchPromises = Object.entries(indicators).map(async ([key, indicator]) => {
+      const response = await fetch(`${APIURL}/${countryCode}/indicator/${indicator}?format=json&date=${year}`);
+      if (!response.ok) {
+        throw new Error(`Network response was not ok for indicator ${indicator}`);
+      }
+      const data = await response.json();
+      return { key, data: data[1] ? data[1][0] : null };
+    });
+    const results = await Promise.all(fetchPromises);
+    return results;
+  } catch (error) {
+    console.error('Fetch error:', error);
+    return null
+  }
+}
+```
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+3. Displaying fetched country data:
 
+```javascript
+// src/sections/countries/page/countries.jsx
+<Grid xs={12} sm={6} md={3}>
+          <AppWidgetSummary
+            title="Population"
+            haveDollarSign={false}
+            havePercentageSign={false}
+            total={getCountryDataByKey(countryData, "population")}
+            color="success"
+            icon={<img alt="icon" src="/assets/icons/glass/ic_glass_people.png" />}
+          />
+        </Grid>
 
+        <Grid xs={12} sm={6} md={3}>
+          <AppWidgetSummary
+            title="GDP (Nominal)"
+            isBIG={true}
+            total={formatGDP(getCountryDataByKey(countryData, "gdp"))}
+            color="info"
+            icon={<img alt="icon" src="/assets/icons/glass/ic_glass_fly_money.png" />}
+          />
+        </Grid>
+
+        <Grid xs={12} sm={6} md={3}>
+          <AppWidgetSummary
+            title="GDP (PPP)"
+            isBIG={true}
+            total={formatGDP(getCountryDataByKey(countryData, "gdpPPP"))}
+            color="warning"
+            icon={<img alt="icon" src="/assets/icons/glass/ic_glass_banknotes.png" />}
+          />
+        </Grid>
+
+```
+Above is the frontend code displaying the first 3 values fetched. Similar code can be found in the source file. 
 
 <!-- SETTING UP THE DATABASE -->
 ## Setting Up the Userbase, Signups and Logins with Amazon Cognito + AWS Amplify
