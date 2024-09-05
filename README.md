@@ -96,7 +96,40 @@ To set up the project locally and get a local copy up and running:
 ### Prerequisites
 * An AWS account with Administrator access
 
-### Database Setup 
+### API Setup & Usage
+The World Bank API is used to fetch economic data of selected countries in selected years. 
+
+1. Set up the data to fetch from the World Bank: 
+
+```
+// src/backend/country-data.js
+// Utilizing World Back REST API
+const APIURL = `https://api.worldbank.org/v2/country`;
+
+const indicators = {
+  gdp: 'NY.GDP.MKTP.CD',
+  gdpGrowth: 'NY.GDP.MKTP.KD.ZG',
+  gdpPerCapita: 'NY.GDP.PCAP.CD',
+  gdpPPP: 'NY.GDP.MKTP.PP.CD',
+  gdpPPPPerCapita: 'NY.GDP.PCAP.PP.CD',
+  population: 'SP.POP.TOTL',
+  imports: 'NE.IMP.GNFS.CD',
+  exports: 'NE.EXP.GNFS.CD',
+  inflation: 'FP.CPI.TOTL.ZG',
+  unemployment: 'SL.UEM.TOTL.ZS'
+};
+
+// country name codes list 
+export const countries = [
+  { value: 'CA', label: 'Canada' },
+  { value: 'US', label: 'United States' },
+  { value: 'CN', label: 'China' },
+  { value: 'JP', label: 'Japan' },
+  { value: 'DE', label: 'Germany' },
+  ...
+```
+
+
 1. Navigate to [Notion](https://notion.so) and create a document.
 2. Create a new database by typing `/database`.
 3. Populate the database with appropriate data. The database(s) you create should be in these formats:
