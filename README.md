@@ -101,7 +101,7 @@ The World Bank API is used to fetch economic data of selected countries in selec
 
 1. Set up the data to fetch from the World Bank: 
 
-```
+```javascript
 // src/backend/country-data.js
 // Utilizing World Back REST API
 const APIURL = `https://api.worldbank.org/v2/country`;
