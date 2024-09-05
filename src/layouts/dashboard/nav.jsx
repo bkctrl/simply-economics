@@ -105,7 +105,7 @@ export default function Nav({ openNav, onCloseNav }) {
         <Typography variant="subtitle2">{(isLoggedIn && attributes) ? attributes.name : "Not Logged In"}</Typography>
 
         <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-          {account.role}
+          {/* {account.role} */}
         </Typography>
       </Box>
     </Box>
