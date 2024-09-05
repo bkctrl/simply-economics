@@ -9,7 +9,7 @@
 <h3 align="center">SimplyEconomics</h3>
 
   <p align="center">
-    A full-stack economics dashboard and discussions forum, powered by AWS services and World Bank REST API.
+    A full-stack economics dashboard and discussions forum, powered by AWS services <br/> and World Bank REST API.
 <br /><br />
 
 ![Vite](https://img.shields.io/badge/vite-%23646CFF.svg?style=for-the-badge&logo=vite&logoColor=white)
