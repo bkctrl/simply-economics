@@ -74,7 +74,7 @@ To set up the project locally and get a local copy up and running:
    ```
 4. Set up the environment variables. More information on each of them are given further below. Your `.env` file should consist of (with similar names):  <br />
    ```sh
-   VITE_USER_POOL_ID=
+    VITE_USER_POOL_ID=
     VITE_USER_POOL_CLIENT_ID=
     VITE_COGNITO_DOMAIN=
     VITE_RDS_USER=
