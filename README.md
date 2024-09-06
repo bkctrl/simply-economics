@@ -319,7 +319,7 @@ export default function SignupView() {
 
 
 
-### Prerequisites
+#### Prerequisites
 * An AWS account with Administrator access
 
 ### Database Setup 
