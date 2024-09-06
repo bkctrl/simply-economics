@@ -727,44 +727,60 @@ export default function App() {
 
 Account Dashboard:
 
+<img src="https://uwmun.s3.ca-central-1.amazonaws.com/uwmun-screenshots.png">
+<br />
+
+Dashboard Not Logged In: 
+
+<img src="https://uwmun.s3.ca-central-1.amazonaws.com/uwmun-screenshots.png">
 <br />
 
 Country Data:
 
+<img src="https://uwmun.s3.ca-central-1.amazonaws.com/uwmun-screenshots.png">
 <br />
 
 Profile Updates:
 
+<img src="https://uwmun.s3.ca-central-1.amazonaws.com/uwmun-screenshots.png">
 <br />
 
 Viewing Posts (1):
 
+<img src="https://uwmun.s3.ca-central-1.amazonaws.com/uwmun-screenshots.png">
 <br />
 
 Viewing Posts (2):
 
+<img src="https://uwmun.s3.ca-central-1.amazonaws.com/uwmun-screenshots.png">
 <br />
 
 Adding Posts:
 
+<img src="https://uwmun.s3.ca-central-1.amazonaws.com/uwmun-screenshots.png">
 <br />
 
 Editing Posts:
 
+<img src="https://uwmun.s3.ca-central-1.amazonaws.com/uwmun-screenshots.png">
 <br />
 
 Posting & Viewing Comments:
 
+<img src="https://uwmun.s3.ca-central-1.amazonaws.com/uwmun-screenshots.png">
 <br />
 
 Account Popover:
 
+<img src="https://uwmun.s3.ca-central-1.amazonaws.com/uwmun-screenshots.png">
 <br />
 
 Logging In:
 
+<img src="https://uwmun.s3.ca-central-1.amazonaws.com/uwmun-screenshots.png">
 <br />
 
 Signing Out:
 
+<img src="https://uwmun.s3.ca-central-1.amazonaws.com/uwmun-screenshots.png">
 <br />
