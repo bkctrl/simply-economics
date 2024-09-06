@@ -659,9 +659,7 @@ Editing/deleting posts and adding comments are implemented in `src/sections/blog
 
 ### The need to access current user data across pages and files
 
-The data for the currently logged-in user (i.e. their name, profile, picture, email, etc.) had to be accessed across different sections and files. <br/>
-Fetching such data from Amazon Cognito in each page/section would result in prolonged loading times and greatly reduce the overall user experience. <br />
-To resolve this issue, user data was fetched in a separate file and exported - this data was imported by different pages/sections. 
+The data for the currently logged-in user (i.e. their name, profile, picture, email, etc.) had to be accessed across different sections and files. Fetching such data from Amazon Cognito in each page/section would result in prolonged loading times and greatly reduce the overall user experience. To resolve this issue, user data was fetched in a separate file and exported - this data was imported by different pages/sections. 
 
 The user data being fetched in a separate backend file:
 
