@@ -99,7 +99,7 @@ To set up the project locally and get a local copy up and running:
 ### API Setup & Usage
 The World Bank API is used to fetch economic data of selected countries in selected years. 
 
-1. Set up the data to fetch from the World Bank: 
+#### 1. Set up the data to fetch from the World Bank: 
 
 ```javascript
 // src/backend/country-data.js
@@ -129,7 +129,7 @@ export const countries = [
   ...
 ```
 
-2. Fetch key data using the API: 
+#### 2. Fetch key data using the API: 
 
 ```javascript
 // src/backend/country-data.js
@@ -152,7 +152,7 @@ export async function fetchEconomicData(countryCode, year) {
 }
 ```
 
-3. Displaying fetched country data:
+#### 3. Displaying fetched country data:
 
 ```javascript
 // src/sections/countries/page/countries.jsx
@@ -193,11 +193,11 @@ Above is the frontend code displaying the first 3 values fetched. Similar code c
 <!-- SETTING UP THE DATABASE -->
 ## Setting Up the Userbase, Signups and Logins with Amazon Cognito + AWS Amplify
 
-1. Create a user pool on **Amazon Cognito.**
+#### 1. Create a user pool on **Amazon Cognito.**
 
 <img src="https://uwmun.s3.ca-central-1.amazonaws.com/uwmun-screenshots.png">
 
-2. Take note of the **user pool ID**, **client ID**, and **Cognito domain**. These will be stored as environment variables.
+#### 2. Take note of the **user pool ID**, **client ID**, and **Cognito domain**. These will be stored as environment variables.
 
 ```ruby
 // .env
@@ -206,7 +206,7 @@ VITE_USER_POOL_CLIENT_ID='YOUR_USER_POOL_CLIENT_ID'
 VITE_COGNITO_DOMAIN='USER_POOL.auth.REGION.amazoncognito.com'
 ```
 
-3. Create functions to handle signups, confirming emails, logins, and logouts.
+#### 3. Create functions to handle signups, confirming emails, logins, and logouts.
 
 ```typescript
 // src/lib/cognitoActions.ts
@@ -232,7 +232,7 @@ export async function handleSignUp(formData: any) {
 // ... handleConfirmSignUp, handleSignIn, handleSignOut
 ```
 
-4. Frontend Integration
+#### 4. Frontend Integration
 
 ```javascript
 // src/sections/signup/signup-view.jsx
@@ -310,17 +310,102 @@ export default function SignupView() {
 
 ## Storing User Data on a S3 Bucket and Implementing Profile Updates
 
+#### 1. Create a S3 Bucket. 
+We will store user profile pictures here. 
+
+<img src="https://uwmun.s3.ca-central-1.amazonaws.com/uwmun-screenshots.png">
+
+#### 2. Create a Function Enabling User to Indirectly Upload to S3
+This will allow the user to update their profile picture by uploading a local image to our S3 bucket created above. 
+
+```javascript
+// src/lib/cognitoActions.ts
+const s3Client = new S3Client({
+  region: "ca-central-1",
+  credentials: {
+    accessKeyId: `${import.meta.env.VITE_IAM_USER_KEY}`,
+    secretAccessKey: `${import.meta.env.VITE_IAM_USER_SECRET}`,
+  },
+});
+
+export async function uploadToS3(file) {
+  const params = {
+    Bucket: "simplyeconomics",
+    Key: `${file.name}`, 
+    Body: file, 
+    ContentType: file.type, 
+    ACL: "public-read" as const,
+  };
+
+  try {
+    const command = new PutObjectCommand(params);
+    const data = await s3Client.send(command);
+    console.log("Successfully uploaded to S3:", data);
+    return `https://${params.Bucket}.s3.${s3Client.config.region}.amazonaws.com/${params.Key}`;
+  } catch (err) {
+    console.error("Error uploading to S3:", err);
+    throw err;
+  }
+}
+```
+
+#### 3. Frontend Integration
+
+```javascript
+// src/sections/user/view/user-view.jsx
+import { handleUpdateUserAttribute, handleUpdatePassword, uploadToS3 } from "src/lib/cognitoActions";
+export default function UserPage() {
+
+  ...
+
+  const handleProfilePictureUpload = async (file) => {
+    console.log("handleProfilePictureUpload Triggered")
+    setIsSubmitting(true);
+    setErrorMessage('');
+    try {
+      const profilePictureUrl = await uploadToS3(file);
+      await handleUpdateUserAttribute({
+        new_pfp: profilePictureUrl,
+      });
+      window.location.reload();
+    } catch (error) {
+      setErrorMessage(error.message);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  ...
+
+return (
+    <Container maxWidth="xl">
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" />
+      <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+        <Typography variant="h4" style={{paddingLeft: "10rem"}}>Update Profile</Typography>
+      </Stack>
+      <Grid xs={16} sm={8} md={4}>
+          <Typography variant="h5" style={{paddingBottom: "1rem"}}>Profile Picture</Typography>
+          <div style={{paddingTop: "1rem"}}></div>
+          <input
+            type="file"
+            name="profilePicture"
+            accept="image/*"
+            ref={fileInputRef} 
+            style={{ display: 'none' }} 
+            onChange={handleInputChange} 
+          />
+          <Button color="warning" size="medium" variant="text" style={{ width: "90%" }}
+            onClick={triggerFileInput} loading={isSubmitting} disabled={isSubmitting}>
+            <UploadIcon className="w-3 h-3"/>
+            <span style={{paddingLeft: "0.5rem"}}>Upload New Picture</span>
+          </Button>
+        </Grid>
+
+  ...
+
+```
 
 
-
-
-
-
-
-
-
-#### Prerequisites
-* An AWS account with Administrator access
 
 ### Database Setup 
 1. Navigate to [Notion](https://notion.so) and create a document.
