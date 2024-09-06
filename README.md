@@ -404,54 +404,238 @@ return (
   ...
 
 ```
-
-
-
-### Database Setup 
-1. Navigate to [Notion](https://notion.so) and create a document.
-2. Create a new database by typing `/database`.
-3. Populate the database with appropriate data. The database(s) you create should be in these formats:
-   ![](https://uwmun.s3.ca-central-1.amazonaws.com/notion-demo-1.png?)
-4. Navigate to [Integrations](https://www.notion.so/profile/integrations) and create a Notion integration. Select the database you created. Select `Internal` or `Public` as appropriate and choose a logo. The UWMUN wesbite for instance uses an internal integration. 
-5. Select appropriate capabilities. Then show the Internal Integration Secret. This would be the `NEXT_PUBLIC_NOTION_API_KEY` in your `.env.local`. **Do not share this with anyone!**
-<br /><br />
-  ![](https://uwmun.s3.ca-central-1.amazonaws.com/notion-demo-2.png?)
-6. Find out your database ID. This is what precedes `?v=` of the link when you open the dabase in fulll screen:
-   ```sh
-   https://www.notion.so/<database_ID>?v=<view_ID>
-   ```
-This would be the `NEXT_PUBLIC_NOTION_EXECUTIVES_DATABASE_ID` or the ID of your specific database. The UWMUN website for instance has one for the executives database.
-
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- EMAIL FUNCTION -->
-## Set Up an S3 Bucket for Profile Picture Storage
-There are numerous options. This project uses **EmailJS** for its email submitting functionality. 
-1. Take a look at EmailJS's [Getting Started](https://www.emailjs.com/docs/) page for detailed instructions.
-2. Fill in the following in your `.env.local` file:
-   ```sh
-   NEXT_PUBLIC_EMAIL_API_KEY=
-   NEXT_PUBLIC_EMAIL_SERVICE_ID=
-   NEXT_PUBLIC_EMAIL_TEMPLATE_ID=
-   ```
+## Enable User to Update their Attributes
 
+#### 1. Create functions for updating user attributes
+```javascript
+// src/lib/cognitoActions.ts
+export async function handleUpdateUserAttribute(formData: any) {
+  let attributeKey;
+  let attributeValue;
+  if (formData.new_pfp) {
+    attributeKey = "picture";
+    attributeValue = formData.new_pfp;
+  } else if (formData.name) {
+    attributeKey = "name";
+    attributeValue = formData.name; 
+  }
+  try {
+    const output = await updateUserAttribute({
+      userAttribute: {
+        attributeKey: String(attributeKey),
+        value: String(attributeValue),
+      },
+    });
+    return handleUpdateUserAttributeNextSteps(output);
+  } catch (error) {
+    console.log(error);
+    return "error";
+  }
+}
+
+```
+
+#### 2. Frontend Integration
+
+```javascript
+// src/sections/user/view/user-view.jsx
+import { handleUpdateUserAttribute, handleUpdatePassword, uploadToS3 } from "src/lib/cognitoActions";
+
+export default function UserPage() {
+
+  ...
+
+    const handleUpdateAttribute = async (e) => {
+    console.log("handleUpdateAttribute triggered");
+    e.preventDefault();
+    setIsSubmitting(true);
+    setErrorMessage('');
+    try {
+      await handleUpdateUserAttribute(formData);
+    } catch (error) {
+      setErrorMessage(error.message);
+    } finally {
+      setIsSubmitting(false);
+      window.location.reload();
+    }
+  };
+
+  ...
+
+  return (
+  <Grid container spacing={2}>
+    <Grid xs={16} sm={8} md={4}>
+      <Typography variant="h5" style={{paddingBottom: "1rem"}}>Name</Typography>
+      <TextField name="name" label="New Name" style={{width: "90%"}} 
+        value={formData.name} onChange={handleInputChange}/>
+      <div style={{paddingTop: "1rem"}}></div>
+      <Button color="primary" size="medium" variant="text" style={{ width: "90%" }}
+        loading={isSubmitting} disabled={isSubmitting} onClick={handleUpdateAttribute} >
+        <FilePenIcon className="w-3 h-3" /> <span style={{paddingLeft: "0.5rem"}}>Update Name </span>
+      </Button>
+    </Grid>
+
+  ...
+
+```
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- CONFIGURING BACKEND -->
 ## Set Up an AWS RDS Database with PostgreSQL for Posts and Comments Data
-You could test the backend both locally or by using a deployed API. The following is on testing locally. 
-1. Uncomment the commented-out code in `src/app/page.tsx` and `server/api/index.js` for local testing.
-2. Navigate to `index.js` and run the server. Assuming you are at the root directory:
-   ```sh
-   cd server/api && nodemon index.js
-   ```
-3. Open a new terminal and run the frontend. On the new terminal:
-   ```sh
-   npm run dev
-   ```
-4. Navigate to `localhost:3000` on your browser and see the project demo!
+
+#### 1. Create a PostgreSQL RDS Database on AWS
+
+<img src="https://uwmun.s3.ca-central-1.amazonaws.com/uwmun-screenshots.png">
+
+#### 2. Note your username, RDS database host endpoint, database name, password, and port number, storing them in .env
+
+```ruby
+// .env
+VITE_RDS_USER='YOUR_USERNAME'
+VITE_RDS_HOST='DATABASE.ID.REGION.rds.amazonaws.com'
+VITE_RDS_DATABASE='DB_NAME'
+VITE_RDS_PASSWORD='PASSWORD'
+VITE_RDS_PORT=PORT_NUM
+```
+
+#### 3. Create tables for posts and comments in the RDS database
+
+```sql
+-- src/backend/create-posts-db.sql
+CREATE TABLE posts (
+  id SERIAL PRIMARY KEY,
+  title TEXT NOT NULL,
+  content TEXT NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  author_name VARCHAR(255) NOT NULL,
+  author_user_id VARCHAR(255) NOT NULL,
+  author_avatar_url TEXT
+);
+
+CREATE TABLE comments (
+  id SERIAL PRIMARY KEY,
+  post_id INT REFERENCES posts(id) ON DELETE CASCADE,
+  content TEXT NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  author_name VARCHAR(255) NOT NULL,
+  author_user_id VARCHAR(255) NOT NULL,
+  author_avatar_url TEXT
+);
+```
+
+#### 4. Connect to the RDS database locally with PgAdmin for monitoring purposes
+
+<img src="https://uwmun.s3.ca-central-1.amazonaws.com/uwmun-screenshots.png">
+
+#### 5. Create a custom REST API for CRUD operations on the posts/comments tables
+
+```javascript
+// src/backend/rds-api.js
+
+const client = new pg.Client({
+  user: import.meta.env.VITE_RDS_USER,
+  host: import.meta.env.VITE_RDS_HOST,
+  database: import.meta.env.VITE_RDS_DATABASE,
+  password: import.meta.env.VITE_RDS_PASSWORD,
+  port: import.meta.env.VITE_RDS_PORT,
+  ssl: {
+    rejectUnauthorized: false, 
+  },
+});
+
+await client.connect();
+
+// Fetch all posts
+app.get('/posts', async (req, res) => {
+  try {
+    console.log("fetching posts");
+    const result = await client.query('SELECT * FROM posts ORDER BY id ASC');
+    res.json(result.rows);
+  } catch (error) {
+    console.error('Error fetching posts:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+// other functions for editing/deleting posts and comments
+
+```
+
+To test locally, uncomment:
+
+```javascript
+// Enable for local testing
+app.listen(4000, () => {
+   console.log("Server running on port 4000");
+ });
+```
+
+Prior to deployment, it is recommended the API to be hosted elsewhere with a reachable endpoint.
+Once the API is deployed, note the API URL as an environment variable:
+
+```ruby
+VITE_RDS_APIURL='API_URL'
+```
+
+#### 6. Leverage the custom API on the frontend
+
+```javascript
+export default function BlogView() {
+
+  ...
+  
+  useEffect(() => {
+    AOS.init();
+    const loadPosts = async () => {
+      try {
+        const response = await fetch(`${import.meta.env.VITE_RDS_APIURL}/posts`);
+        if (!response.ok) {
+          throw new Error(`Failed to fetch posts: ${response.statusText}`);
+        }
+        const postsFromDb = await response.json();
+        setPosts(postsFromDb);
+        console.log("Read from RDS:", postsFromDb);
+      } catch (error) {
+        console.error('Failed to fetch posts:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    loadPosts();
+  }, []);
+
+  ...
+
+```
+
+Other CRUD functions follow. Adding posts is implemented in `src/sections/blog/add-post-modal.jsx`. <br />
+Editing/deleting posts and adding comments are implemented in `src/sections/blog/post-detail-popover.jsx`. 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+<!-- USAGE EXAMPLES -->
+## Challenges Faced & Solutions
+
+The website automatically updates to the changes you make to the Notion document!
+
+For instance:
+<p align="center">
+  <img alt="Light" src="https://uwmun.s3.ca-central-1.amazonaws.com/notion-demo-3-new.png?" width="45%">
+&nbsp; &nbsp; &nbsp; &nbsp;
+  <img alt="Dark" src="https://uwmun.s3.ca-central-1.amazonaws.com/notion-demo-4-new.png?" width="45%">
+</p>
+
+After making some changes:
+<p align="center">
+  <img alt="Light" src="https://uwmun.s3.ca-central-1.amazonaws.com/notion-demo-5-new.png?" width="45%">
+&nbsp; &nbsp; &nbsp; &nbsp;
+  <img alt="Dark" src="https://uwmun.s3.ca-central-1.amazonaws.com/notion-demo-6-new.png?" width="45%">
+</p>
+
 
 
 <!-- USAGE EXAMPLES -->
