@@ -193,6 +193,14 @@ Above is the frontend code displaying the first 3 values fetched. Similar code c
 <!-- SETTING UP THE DATABASE -->
 ## Setting Up the Userbase, Signups and Logins with Amazon Cognito + AWS Amplify
 
+### Prerequisites
+Ensure your IAM account has access to the privileges being accessed below. Save your IAM user key and secret as environment variables.
+```ruby
+// .env
+VITE_IAM_USER_KEY='YOUR_USER_KEY'
+VITE_IAM_USER_SECRET='YOUR_USER_SECRET'
+```
+
 #### 1. Create a user pool on **Amazon Cognito.**
 
 <img src="https://uwmun.s3.ca-central-1.amazonaws.com/uwmun-screenshots.png">
@@ -232,7 +240,36 @@ export async function handleSignUp(formData: any) {
 // ... handleConfirmSignUp, handleSignIn, handleSignOut
 ```
 
-#### 4. Frontend Integration
+#### 4. Create functions that enable the user to update their attributes
+
+```typescript
+// src/lib/cognitoActions.ts
+export async function handleUpdateUserAttribute(formData: any) {
+  let attributeKey;
+  let attributeValue;
+  if (formData.new_pfp) {
+    attributeKey = "picture";
+    attributeValue = formData.new_pfp;
+  } else if (formData.name) {
+    attributeKey = "name";
+    attributeValue = formData.name; 
+  }
+  try {
+    const output = await updateUserAttribute({
+      userAttribute: {
+        attributeKey: String(attributeKey),
+        value: String(attributeValue),
+      },
+    });
+    return handleUpdateUserAttributeNextSteps(output);
+  } catch (error) {
+    console.log(error);
+    return "error";
+  }
+}
+```
+
+#### 5. Frontend Integration
 
 ```javascript
 // src/sections/signup/signup-view.jsx
@@ -620,40 +657,116 @@ Editing/deleting posts and adding comments are implemented in `src/sections/blog
 <!-- USAGE EXAMPLES -->
 ## Challenges Faced & Solutions
 
-The website automatically updates to the changes you make to the Notion document!
+### The need to access current user data across pages and files
 
-For instance:
-<p align="center">
-  <img alt="Light" src="https://uwmun.s3.ca-central-1.amazonaws.com/notion-demo-3-new.png?" width="45%">
-&nbsp; &nbsp; &nbsp; &nbsp;
-  <img alt="Dark" src="https://uwmun.s3.ca-central-1.amazonaws.com/notion-demo-4-new.png?" width="45%">
-</p>
+The data for the currently logged-in user (i.e. their name, profile, picture, email, etc.) had to be accessed across different sections and files. <br/>
+Fetching such data from Amazon Cognito in each page/section would result in prolonged loading times and greatly reduce the overall user experience. <br />
+To resolve this issue, user data was fetched in a separate file and exported - this data was imported by different pages/sections. 
 
-After making some changes:
-<p align="center">
-  <img alt="Light" src="https://uwmun.s3.ca-central-1.amazonaws.com/notion-demo-5-new.png?" width="45%">
-&nbsp; &nbsp; &nbsp; &nbsp;
-  <img alt="Dark" src="https://uwmun.s3.ca-central-1.amazonaws.com/notion-demo-6-new.png?" width="45%">
-</p>
+The user data being fetched in a separate backend file:
 
+```javascript
+// src/UserContext.jsx
+const UserContext = createContext(null);
+
+export const UserProvider = ({ children }) => {
+useEffect(() => {
+    const loadUserData = async () => {
+      try {
+        const session = await fetchAuthSession();
+        console.log("Session:", session); // Debugging session
+
+        if (session) {
+          setIsLoggedIn(true);
+          const currentUser = await getCurrentUser();
+          console.log("User:", currentUser); // Debugging user data
+          setUser(currentUser);
+        } else {
+          setIsLoggedIn(false);
+        }
+      } catch (error) {
+        console.error('Error checking user session:', error);
+        setIsLoggedIn(false);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadUserData();
+  }, []);
+
+  return (
+    <UserContext.Provider value={{ user, attributes, isLoggedIn, loading }}>
+      {children}
+    </UserContext.Provider>
+  );
+};
+
+export const useUser = () => useContext(UserContext);
+```
+
+This is rendered before the entire project (individual pages) is loaded. 
+
+```javascript
+// src/app.jsx
+import { UserProvider, useUser } from 'src/UserContext';
+
+export default function App() {
+  return (
+    <ThemeProvider>
+      <ConfigureAmplifyClientSide />
+      <UserProvider>
+        <MainContent />
+      </UserProvider>
+    </ThemeProvider>
+  );
+}
+```
 
 
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-The website automatically updates to the changes you make to the Notion document!
+Account Dashboard:
 
-For instance:
-<p align="center">
-  <img alt="Light" src="https://uwmun.s3.ca-central-1.amazonaws.com/notion-demo-3-new.png?" width="45%">
-&nbsp; &nbsp; &nbsp; &nbsp;
-  <img alt="Dark" src="https://uwmun.s3.ca-central-1.amazonaws.com/notion-demo-4-new.png?" width="45%">
-</p>
+<br />
 
-After making some changes:
-<p align="center">
-  <img alt="Light" src="https://uwmun.s3.ca-central-1.amazonaws.com/notion-demo-5-new.png?" width="45%">
-&nbsp; &nbsp; &nbsp; &nbsp;
-  <img alt="Dark" src="https://uwmun.s3.ca-central-1.amazonaws.com/notion-demo-6-new.png?" width="45%">
-</p>
+Country Data:
 
+<br />
+
+Profile Updates:
+
+<br />
+
+Viewing Posts (1):
+
+<br />
+
+Viewing Posts (2):
+
+<br />
+
+Adding Posts:
+
+<br />
+
+Editing Posts:
+
+<br />
+
+Posting & Viewing Comments:
+
+<br />
+
+Account Popover:
+
+<br />
+
+Logging In:
+
+<br />
+
+Signing Out:
+
+<br />
