@@ -193,6 +193,132 @@ Above is the frontend code displaying the first 3 values fetched. Similar code c
 <!-- SETTING UP THE DATABASE -->
 ## Setting Up the Userbase, Signups and Logins with Amazon Cognito + AWS Amplify
 
+1. Create a user pool on **Amazon Cognito.**
+
+<img src="https://uwmun.s3.ca-central-1.amazonaws.com/uwmun-screenshots.png">
+
+2. Take note of the **user pool ID**, **client ID**, and **Cognito domain**. These will be stored as environment variables.
+
+```ruby
+// .env
+VITE_USER_POOL_ID='YOUR_USER_POOL_ID'
+VITE_USER_POOL_CLIENT_ID='YOUR_USER_POOL_CLIENT_ID'
+VITE_COGNITO_DOMAIN='USER_POOL.auth.REGION.amazoncognito.com'
+```
+
+3. Create functions to handle signups, confirming emails, logins, and logouts.
+
+```typescript
+// src/lib/cognitoActions.ts
+export async function handleSignUp(formData: any) {
+  try {
+    const { isSignUpComplete, userId, nextStep } = await signUp({
+      username: String(formData.email),
+      password: String(formData.password),
+      options: {
+        userAttributes: {
+          email: String(formData.email),
+          name: String(formData.name),
+          picture: "https://simplyeconomics.s3.ca-central-1.amazonaws.com/placeholder-pfp.jpg"
+        },
+        autoSignIn: true,
+      },
+    });
+  } catch (error) {
+    return getErrorMessage(error);
+  }
+  window.location.href = "/confirm-email";
+}
+// ... handleConfirmSignUp, handleSignIn, handleSignOut
+```
+
+4. Frontend Integration
+
+```javascript
+// src/sections/signup/signup-view.jsx
+import { handleSignUp } from "src/lib/cognitoActions";
+
+export default function SignupView() {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    password: '',
+  });
+  const [errorMessage, setErrorMessage] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  
+  ...
+
+  const handleInputChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    console.log("handleSubmit triggered");
+    e.preventDefault();
+    setIsSubmitting(true);
+    setErrorMessage('');
+    try {
+      await handleSignUp(formData);
+    } catch (error) {
+      setErrorMessage(error.message);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  ...
+
+  const renderForm = (
+    <>
+      <Stack spacing={3}>
+        <TextField name="name" label="Enter your name" value={formData.name}
+          onChange={handleInputChange}
+          required />
+        <TextField name="email" label="Email address" value={formData.email}
+          onChange={handleInputChange}
+          required />
+
+        <TextField
+          name="password"
+          label="Password"
+          type={showPassword ? 'text' : 'password'}
+          value={formData.password}
+          onChange={handleInputChange}
+          required
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
+                  <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
+        />
+      </Stack>
+      <br/>
+      <SignUpButton isSubmitting={isSubmitting} handleSubmit={handleSubmit} />
+    </>
+  );
+```
+
+
+## Storing User Data on a S3 Bucket and Implementing Profile Updates
+
+
+
+
+
+
+
+
+
+
 ### Prerequisites
 * An AWS account with Administrator access
 
