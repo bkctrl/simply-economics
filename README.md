@@ -1,7 +1,7 @@
 <a href=""><img src="https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=for-the-badge"></a>
 <!-- PROJECT LOGO -->
 
-<div align="center">
+<div align="center" id="readme-top">
   <a href="https://github.com/bkctrl/uwmun">
     <br /><br />
     <img src="https://simplyeconomics.s3.ca-central-1.amazonaws.com/simplyeconomics-logo.png" alt="Logo" width="110" height="110">
@@ -191,6 +191,8 @@ export async function fetchEconomicData(countryCode, year) {
 ```
 Above is the frontend code displaying the first 3 values fetched. Similar code can be found in the source file. 
 
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
 <!-- SETTING UP THE DATABASE -->
 ## Setting Up the Userbase, Signups and Logins with Amazon Cognito + AWS Amplify
 
@@ -344,6 +346,8 @@ export default function SignupView() {
     </>
   );
 ```
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
 ## Storing User Data on a S3 Bucket and Implementing Profile Updates
@@ -722,6 +726,7 @@ export default function App() {
 }
 ```
 
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- USAGE EXAMPLES -->
 ## Usage
@@ -753,7 +758,7 @@ export default function App() {
 
 #### Viewing Posts (2):
 
-<img src="https://simplyeconomics.s3.ca-central-1.amazonaws.com/postview-2-screenshot.png">
+<img src="https://simplyeconomics.s3.ca-central-1.amazonaws.com/postview2-screenshot.png">
 <br />
 
 #### Adding Posts:
