@@ -42,7 +42,7 @@ This project makes use of various AWS services. Account logins and signups are p
 
 ### Screenshots
 
-<img src="https://uwmun.s3.ca-central-1.amazonaws.com/uwmun-screenshots.png">
+<img src="https://simplyeconomics.s3.ca-central-1.amazonaws.com/screenshots.png">
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
@@ -203,7 +203,7 @@ VITE_IAM_USER_SECRET='YOUR_USER_SECRET'
 
 #### 1. Create a user pool on **Amazon Cognito.**
 
-<img src="https://uwmun.s3.ca-central-1.amazonaws.com/uwmun-screenshots.png">
+<img src="https://simplyeconomics.s3.ca-central-1.amazonaws.com/cognito-screenshot.png">
 
 #### 2. Take note of the **user pool ID**, **client ID**, and **Cognito domain**. These will be stored as environment variables.
 
@@ -350,7 +350,7 @@ export default function SignupView() {
 #### 1. Create a S3 Bucket. 
 We will store user profile pictures here. 
 
-<img src="https://uwmun.s3.ca-central-1.amazonaws.com/uwmun-screenshots.png">
+<img src="https://simplyeconomics.s3.ca-central-1.amazonaws.com/s3-screenshot.png">
 
 #### 2. Create a Function Enabling User to Indirectly Upload to S3
 This will allow the user to update their profile picture by uploading a local image to our S3 bucket created above. 
@@ -525,7 +525,7 @@ export default function UserPage() {
 
 #### 1. Create a PostgreSQL RDS Database on AWS
 
-<img src="https://uwmun.s3.ca-central-1.amazonaws.com/uwmun-screenshots.png">
+<img src="https://simplyeconomics.s3.ca-central-1.amazonaws.com/rds-screenshot.png">
 
 #### 2. Note your username, RDS database host endpoint, database name, password, and port number, storing them in .env
 
@@ -565,7 +565,7 @@ CREATE TABLE comments (
 
 #### 4. Connect to the RDS database locally with PgAdmin for monitoring purposes
 
-<img src="https://uwmun.s3.ca-central-1.amazonaws.com/uwmun-screenshots.png">
+<img src="https://simplyeconomics.s3.ca-central-1.amazonaws.com/pgadmin-screenshot.png">
 
 #### 5. Create a custom REST API for CRUD operations on the posts/comments tables
 
@@ -725,62 +725,62 @@ export default function App() {
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-Account Dashboard:
+#### Account Dashboard:
 
-<img src="https://uwmun.s3.ca-central-1.amazonaws.com/uwmun-screenshots.png">
+<img src="https://simplyeconomics.s3.ca-central-1.amazonaws.com/dashboard-screenshot.png">
 <br />
 
-Dashboard Not Logged In: 
+#### Dashboard Not Logged In: 
 
-<img src="https://uwmun.s3.ca-central-1.amazonaws.com/uwmun-screenshots.png">
+<img src="https://simplyeconomics.s3.ca-central-1.amazonaws.com/notloggedin-screenshot.png">
 <br />
 
-Country Data:
+#### Country Data:
 
-<img src="https://uwmun.s3.ca-central-1.amazonaws.com/uwmun-screenshots.png">
+<img src="https://simplyeconomics.s3.ca-central-1.amazonaws.com/countrydata-screenshot.png">
 <br />
 
-Profile Updates:
+#### Profile Updates:
 
-<img src="https://uwmun.s3.ca-central-1.amazonaws.com/uwmun-screenshots.png">
+<img src="https://simplyeconomics.s3.ca-central-1.amazonaws.com/profile-screenshot.png">
 <br />
 
-Viewing Posts (1):
+#### Viewing Posts (1):
 
-<img src="https://uwmun.s3.ca-central-1.amazonaws.com/uwmun-screenshots.png">
+<img src="https://simplyeconomics.s3.ca-central-1.amazonaws.com/postview-screenshot.png">
 <br />
 
-Viewing Posts (2):
+#### Viewing Posts (2):
 
-<img src="https://uwmun.s3.ca-central-1.amazonaws.com/uwmun-screenshots.png">
+<img src="https://simplyeconomics.s3.ca-central-1.amazonaws.com/postview-2-screenshot.png">
 <br />
 
-Adding Posts:
+#### Adding Posts:
 
-<img src="https://uwmun.s3.ca-central-1.amazonaws.com/uwmun-screenshots.png">
+<img src="https://simplyeconomics.s3.ca-central-1.amazonaws.com/addpost-screenshot.png">
 <br />
 
-Editing Posts:
+#### Editing Posts:
 
-<img src="https://uwmun.s3.ca-central-1.amazonaws.com/uwmun-screenshots.png">
+<img src="https://simplyeconomics.s3.ca-central-1.amazonaws.com/editpost-screenshot.png">
 <br />
 
-Posting & Viewing Comments:
+#### Posting & Viewing Comments:
 
-<img src="https://uwmun.s3.ca-central-1.amazonaws.com/uwmun-screenshots.png">
+<img src="https://simplyeconomics.s3.ca-central-1.amazonaws.com/comments-screenshot.png">
 <br />
 
-Account Popover:
+#### Account Popover:
 
-<img src="https://uwmun.s3.ca-central-1.amazonaws.com/uwmun-screenshots.png">
+<img src="https://simplyeconomics.s3.ca-central-1.amazonaws.com/popover-screenshot.png">
 <br />
 
-Logging In:
+#### Logging In:
 
-<img src="https://uwmun.s3.ca-central-1.amazonaws.com/uwmun-screenshots.png">
+<img src="https://simplyeconomics.s3.ca-central-1.amazonaws.com/login-screenshot.png">
 <br />
 
-Signing Out:
+#### Register:
 
-<img src="https://uwmun.s3.ca-central-1.amazonaws.com/uwmun-screenshots.png">
+<img src="https://simplyeconomics.s3.ca-central-1.amazonaws.com/register-screenshot.png">
 <br />
